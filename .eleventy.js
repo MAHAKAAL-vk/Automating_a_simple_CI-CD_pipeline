@@ -16,6 +16,9 @@ const svgIconShortcode = require('./src/shortcodes/svg-icon.js');
 const { EleventyHtmlBasePlugin } = require("@11ty/eleventy");
 
 module.exports = config => {
+  // Define pathPrefix at the top so it's fully initialized for plugins
+  const pathPrefix = process.env.PATH_PREFIX || '/';
+
   config.addFilter('dateFilter', dateFilter);
   config.addFilter('w3DateFilter', w3DateFilter);
   config.addFilter('parentFilter', parentFilter);
@@ -27,6 +30,8 @@ module.exports = config => {
   config.addPlugin(eleventyNavigationPlugin);
   config.addPlugin(syntaxHighlight);
   config.addPlugin(pluginTOC);
+
+  // Pass pathPrefix to HTML Base Plugin to automatically fix asset paths for GitHub Pages
   config.addPlugin(EleventyHtmlBasePlugin, {
     pathPrefix: pathPrefix
   });
@@ -63,12 +68,6 @@ module.exports = config => {
   config.on('eleventy.after', () => {
     execSync(`npx pagefind --source _site --glob \"**/*.html\"`, { encoding: 'utf-8' })
   });
-
-  // Required for eleventy to run on GitHub Pages
-  // as the site URL will be https://<username>.github.io/<repo>/index.html
-  // when deploying to Pages, set the PATH_PREFIX environment variable to your 
-  // repository name
-  const pathPrefix = process.env.PATH_PREFIX || '/';
 
   return {
     markdownTemplateEngine: 'njk',
