@@ -113,7 +113,7 @@ jobs:
 
       - name: Build site with Eleventy
         env:
-          PATH_PREFIX: /$(echo "${{ github.repository }}" | cut -d'/' -f2-)/
+          PATH_PREFIX: /${{ github.event.repository.name }}/
         run: npm run prod
 
       - name: Upload artifact
