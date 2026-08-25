@@ -27,7 +27,9 @@ module.exports = config => {
   config.addPlugin(eleventyNavigationPlugin);
   config.addPlugin(syntaxHighlight);
   config.addPlugin(pluginTOC);
-  config.addPlugin(EleventyHtmlBasePlugin);
+  config.addPlugin(EleventyHtmlBasePlugin, {
+    pathPrefix: pathPrefix
+  });
 
   config.addPassthroughCopy({ './src/robots.txt': '/robots.txt' });
   config.addPassthroughCopy('./src/img/**');
